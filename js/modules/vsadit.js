@@ -1,6 +1,5 @@
 export default function vsadit(vlozils, vlozeno, vsadils) {
   let castka = Number(document.getElementById("sazka").value);
-  // var vlozeno = Number(document.getElementById("vlozeno").innerHTML);
 
   if (vlozeno === undefined) {
     vlozeno = vlozils;

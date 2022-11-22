@@ -20,15 +20,23 @@ const soucetEl = document.getElementById("soucet");
 const vlozColEl = document.getElementById("vlozCol");
 const buttonsEl = document.getElementById("buttons");
 const zahrajEl = document.getElementById("zahrajBtn");
+const zivotyEl = document.getElementById("zivoty");
 
 let zivoty = localStorage.getItem("zivoty");
-if(!zivoty){
+if (!zivoty) {
   localStorage.setItem("zivoty", 3);
 }
-if(zivoty == 0){
+if (zivoty == 0) {
+  alert("Prohráls, přišels o všechny životy");
   localStorage.setItem("zivoty", 3);
-  alert('Prohráls, přišels o všechny životy');
 }
+
+let zobrazZivot = Array.from({ length: zivoty })
+  .map(function (element) {
+    return `<img class="w-6 mx-1" src="./assets/heart-svgrepo-com.svg" alt="zivot-${element}"/>`;
+  })
+  .join("");
+zivotyEl.innerHTML = zobrazZivot;
 
 const vkladEl = document.getElementById("vklad");
 vkladEl.addEventListener("click", () => {
@@ -71,15 +79,11 @@ document.addEventListener("click", function (e) {
     zahraj(tazene, soucet, tazenePc, soucetPc);
   }
 });
-// zahratEl.addEventListener("click", () => {
-//   console.log('zahrano', tazene);
-// })
 
 const vsaditEl = document.getElementById("vsadit");
 vsaditEl.addEventListener(
   "click",
   () => {
-    // console.log('vsazeno funkce',vlozils);
     if (zamychane.length > 1) {
       zivoty = localStorage.getItem("zivoty");
       let upravZamych = zamychane.shift();
@@ -89,37 +93,36 @@ vsaditEl.addEventListener(
       soucet = 0;
       soucetPc = 0;
       tazene.forEach((element) => {
-        // console.log("zamych", element.value);
         soucet += element.value;
       });
       tazenePc.forEach((element) => {
-        // console.log("zamych", element.value);
         soucetPc += element.value;
       });
       soucetEl.innerHTML = `Součet táhnutých karet <span class="font-bold">${soucet}</span><br>
       `;
-      // Součet táhnutých karet <span class="font-bold">${soucetPc}</span>
       if (soucet === 21) {
         controller.abort();
-        return alert("Je to tak, vyhráls, máš 21!");
+        alert("Je to tak, vyhráls, máš 21!");
+        return location.reload();
       }
       if (soucetPc === 21) {
         controller.abort();
-        // localStorage.setItem("zivoty", zivoty - 1);
-        return alert(
+        alert(
           "Zahrál jsi 21!!!\nPočítač, ale má taky 21 a hrál kartami:\n" +
             Object.values(tazenePc).map(function (element) {
               return element.name;
             })
         );
+        return location.reload();
       }
       if (soucet > 21) {
         controller.abort();
         localStorage.setItem("zivoty", zivoty - 1);
-        return alert("Jsi v piči");
+        alert("Heh, jsi přes čáru, teda 21");
+        return location.reload();
       } else if (soucetPc > 21) {
         controller.abort();
-        return alert(
+        alert(
           "Fajn, vyhráls... \nPočítač to přestřelil a zahrál: " +
             Object.values(tazenePc).map(function (element) {
               return element.name;
@@ -127,6 +130,7 @@ vsaditEl.addEventListener(
             "\nse součtem " +
             soucetPc
         );
+        return location.reload();
       }
       jeVsazeno = vsadit(vlozils, vlozeno, jeVsazeno);
 
@@ -135,7 +139,7 @@ vsaditEl.addEventListener(
           return `<span class="font-semibold">${element.name}</span><br/>`;
         });
         tahnutoEl.innerHTML = `<span class="font-bold">Na ruce máš</span><br>${poleTahnutych}`;
-        zahrajEl.innerHTML = `              <label class="block mb-2 font-medium text-gray-900">Zahraj s tim, co máš</label>
+        zahrajEl.innerHTML = `<label class="block mb-2 font-medium text-gray-900">Zahraj s tim, co máš</label>
         <button
         class="text-gray-100 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-sm w-full px-5 py-2.5 text-center"
         type="button"
@@ -145,18 +149,8 @@ vsaditEl.addEventListener(
       </button>`;
       }
     } else {
-      return alert("Zamýchat karty bys nechtěl?");
+      return alert("Zamíchat karty bys nechtěl?");
     }
   },
   { signal: controller.signal }
 );
-
-// function addGlobalEventListener(type, selector, callback, options) {
-//   document.addEventListener(type, e => {
-//     if (e.target.matches(selector)) callback(e)
-//   }, options)
-// }
-
-// addGlobalEventListener("click", "button", () => {
-//   console.log("Clicked Button")
-// }, { once: true })
