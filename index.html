@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="./js/main.js"></script>
+    <title>Oko bere</title>
+  </head>
+  <body>
+    <div class="bg-red-100 min-h-screen">
+      <div class="container max-w-5xl p-8 mx-auto">
+        <div class="p-8 bg-gray-100 rounded-lg shadow-lg">
+          <h1 class="text-6xl text-center pb-4">Oko bere</h1>
+          <div id="buttons">
+            <button
+              class="text-gray-100 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+              type="button"
+              id="zamychat"
+            >
+              Zamýchat karty
+            </button>
+          </div>
+          <div class="py-4">
+            <label class="block mb-2 font-medium text-gray-900"
+              >Počáteční vklad (Kč)</label
+            >
+            <div id="vlozCol" class="grid gap-6 grid-cols-2">
+              <input
+                type="number"
+                id="vloz"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-blue-500 block w-full p-2.5"
+              /><button
+                class="text-gray-100 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                type="button"
+                id="vklad"
+              >
+                Vložit vklad
+              </button>
+            </div>
+          </div>
+          <div class="py-4">
+            <label class="block mb-2 font-medium text-gray-900"
+              >Částka kterou chceš vsadit (Kč)</label
+            >
+            <div class="grid gap-6 grid-cols-2">
+              <input
+                type="number"
+                id="sazka"
+                placholder="Sázka"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-blue-500 block w-full p-2.5"
+              />
+              <button
+                class="text-gray-100 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                type="button"
+                id="vsadit"
+              >
+                Vsadit
+              </button>
+            </div>
+          </div>
+          <div class="grid gap-6 grid-cols-2">
+            <div>
+              <span id="vlozeno" class="font-semibold"> </span>
+            </div>
+            <div id="zahrajBtn"></div>
+          </div>
+
+          <span id="zbytek"></span>
+          <span id="tahnuto"></span><span id="soucet"></span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
