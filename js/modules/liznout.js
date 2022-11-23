@@ -1,5 +1,5 @@
-export default function liznout(tazene, soucet, tazenePc, soucetPc) {
-    console.log('tazene', tazene);
-    console.log('tazenePc', tazenePc);
+export default function liznout(vlozeno) {
+  console.log(vlozeno);
+    return vlozeno;
   }
   
