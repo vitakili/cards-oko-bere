@@ -26,18 +26,22 @@ export default function vsadit(vlozils, vlozeno, vsadils) {
         );
         castka = Number(novaCastka);
       } else if (castka > vlozeno) {
+        // while(castka > vlozeno){
         let novaCastka = prompt("Notaaak, nezkoušej sázet víc, než máš");
-        castka = Number(novaCastka);
+          castka = Number(novaCastka);
+        // }
       } else if (isNaN(castka)) {
         let novaCastka = prompt("Notaaak, peníze, jakože číslo...");
         castka = Number(novaCastka);
       }
+      if (!isNaN(vlozeno) && vlozeno > 0 && castka < vlozeno) {
       vlozeno = vlozeno - castka;
       document.getElementById(
         "vlozeno"
       ).innerHTML = `Zbývá ti <span class="font-bold">${vlozeno}</span> Kč`;
-      vymaz
-      return vlozeno;
+      vymaz;
+        return vlozeno;
+      }
     }
   }
 }
