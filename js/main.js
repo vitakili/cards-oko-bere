@@ -5,6 +5,7 @@ import vsadit from "./modules/vsadit.js";
 import zahraj from "./modules/zahraj.js";
 import zamichatKarty from "./modules/zamichatKarty.js";
 import liznout from "./modules/liznout.js";
+import odejit from "./modules/odejit.js";
 
 const zamichane = [];
 const tazene = [];
@@ -158,7 +159,7 @@ zamichatEl.addEventListener("click", () => {
     <button
       class="text-gray-100 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
       type="button"
-      id="opust"
+      id="odejit"
       >
       Odejít
     </button>
@@ -168,6 +169,9 @@ zamichatEl.addEventListener("click", () => {
 document.addEventListener("click", function (e) {
   if (e.target && e.target.id == "reset") {
     reset(jeKonec);
+  }
+  if (e.target && e.target.id == "odejit") {
+    odejit(getPenize());
   }
   if (zamichane.length > 1) {
     if (e.target && e.target.id == "vklad") {
