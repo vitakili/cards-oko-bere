@@ -197,9 +197,10 @@ document.addEventListener("click", function (e) {
         rozdejKarty();
         // if (jeVsazeno) {
         let poleTahnutych = Object.values(tazene).map(function (element) {
-          return `<span class="font-semibold">${element.name}</span><br/>`;
-        });
-        tahnutoEl.innerHTML = `<span class="font-bold">Na ruce máš</span><br>${poleTahnutych}`;
+          // return `<span class="font-semibold">${element.name}</span><br/>`;
+          return `<img class="w-24" src="${element.img}" alt="${element.name}"/>`;
+        }).join("");
+        tahnutoEl.innerHTML = `<span class="font-bold">Na ruce máš</span><div class="grid grid-cols-2 md:grid-cols-6">${poleTahnutych}</div>`;
         // }
       }
     }
@@ -219,9 +220,9 @@ document.addEventListener(
           rozdejKarty();
           if (jeVsazeno.vlozeno) {
             let poleTahnutych = Object.values(tazene).map(function (element) {
-              return `<span class="font-semibold">${element.name}</span><br/>`;
-            });
-            tahnutoEl.innerHTML = `<span class="font-bold">Na ruce máš</span><br>${poleTahnutych}`;
+              return `<img class="w-24" src="${element.img}" alt="${element.name}"/>`;
+            }).join("");;
+            tahnutoEl.innerHTML = `<span class="font-bold">Na ruce máš</span><div class="grid grid-cols-2 md:grid-cols-6">${poleTahnutych}</div>`;
           }
           setPenize(jeVsazeno.vlozeno);
         } else {
