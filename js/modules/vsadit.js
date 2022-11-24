@@ -1,20 +1,28 @@
-export default function vsadit(vlozils, vlozeno, vsadils) {
+export default function vsadit(vlozils, vlozeno, vsadils, vsazenePole, celkemVsazeno) {
   let castka = Number(document.getElementById("sazka").value);
   let vymaz = (document.getElementById("sazka").value = "");
-
+  let vkladStorage = localStorage.getItem("penize");
+  vsazenePole.push(castka);
+  celkemVsazeno = vsazenePole.reduce((partialSum, a) => partialSum + a, 0);
+  // console.log(celkemVsazeno);
   if (vlozeno === undefined) {
-    vlozeno = vlozils;
+    if(vlozils > 0){
+      vlozeno = vlozils;
+    }else{
+      vlozeno = vkladStorage;
+    }
   }
   if (vsadils) {
     vlozeno = vsadils;
   }
+
   if ((castka !== 0 && castka < vlozeno) || castka === vlozeno) {
     vlozeno = vlozeno - castka;
     document.getElementById(
       "vlozeno"
     ).innerHTML = `Zbývá ti <span class="font-bold">${vlozeno}</span> Kč`;
     vymaz;
-    return vlozeno;
+    return {vlozeno, celkemVsazeno};
   } else {
     if (vlozeno === 0) {
       return alert("Nemůžeš již vsázet, jsi na nule");
@@ -40,7 +48,7 @@ export default function vsadit(vlozils, vlozeno, vsadils) {
           "vlozeno"
         ).innerHTML = `Zbývá ti <span class="font-bold">${vlozeno}</span> Kč`;
         vymaz;
-        return vlozeno;
+        return {vlozeno, celkemVsazeno};
       }
     }
   }
