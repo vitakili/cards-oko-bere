@@ -13,7 +13,7 @@ const tazenePc = [];
 const vsaditHTML = `<label class="block mb-2 font-medium text-gray-900"
 >Částka kterou chceš vsadit (Kč)</label
 >
-<div class="grid gap-6 grid-cols-2">
+<div class="grid gap-6 md:grid-cols-2">
 <input
   type="number"
   id="sazka"
