@@ -52,6 +52,7 @@ let upravZamich;
 let upravZamichPc;
 const controller = new AbortController();
 let jeKonec = false;
+let vlozilsKolo = getPenize();
 
 // Pouze ID z index.html
 const tahnutoEl = document.getElementById("tahnuto");
@@ -68,14 +69,15 @@ let zivoty = localStorage.getItem("zivoty");
 if (!zivoty) {
   localStorage.setItem("zivoty", 3);
 }
-if (zivoty == 0 || isNaN(zivoty)) {
+if (zivoty == 0 || isNaN(zivoty) || isNaN(getPenize())) {
   alert("Prohráls, přišels o všechny životy");
   localStorage.setItem("zivoty", 3);
   setPenize(0);
 }
+
 let zobrazZivot = Array.from({ length: zivoty })
   .map(function () {
-    return ` <svg class="w-6 mx-1" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    return ` <svg class="w-6 mx-1" version="1.1" id="Capa_1" x="0px" y="0px"
 	 viewBox="0 0 471.701 471.701">
 <g>
 	<path d="M433.601,67.001c-24.7-24.7-57.4-38.2-92.3-38.2s-67.7,13.6-92.4,38.3l-12.9,12.9l-13.1-13.1
@@ -86,42 +88,11 @@ let zobrazZivot = Array.from({ length: zivoty })
 		c19.6-19.6,45.7-30.4,73.3-30.4c27.6,0,53.6,10.8,73.2,30.3c19.6,19.6,30.3,45.6,30.3,73.3
 		C444.801,187.101,434.001,213.101,414.401,232.701z"/>
 </g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
 </svg>
     `;
   })
   .join("");
 zivotyEl.innerHTML = zobrazZivot;
-
 
 if (getPenize() == 0 || getPenize() == null || getPenize() == "undefined") {
   vlozColEl.innerHTML = `<input
@@ -153,7 +124,8 @@ zamichatEl.addEventListener("click", () => {
       class="text-gray-100 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-bold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
       type="button"
       id="reset"
-    >
+      disabled
+      >
       Reset
     </button>
     <button
@@ -164,11 +136,20 @@ zamichatEl.addEventListener("click", () => {
       Odejít
     </button>
     `;
+  //   ${!jeKonec ? "disabled" : ""
+  // }
 });
+
+// document.addEventListener("change", (jeKonec) => {
+
+// })
 
 document.addEventListener("click", function (e) {
   if (e.target && e.target.id == "reset") {
     reset(jeKonec);
+    if (getPenize() == 0) {
+      localStorage.setItem("zivoty", zivoty - 1);
+    }
   }
   if (e.target && e.target.id == "odejit") {
     odejit(getPenize());
@@ -186,20 +167,33 @@ document.addEventListener("click", function (e) {
     }
     if (e.target && e.target.id == "zahrat") {
       if (!jeKonec) {
-        zahraj(tazene, soucet, tazenePc, soucetPc, zivoty, jeVsazeno.vlozeno, jeVsazeno.celkemVsazeno);
+        zahraj(
+          tazene,
+          soucet,
+          tazenePc,
+          soucetPc,
+          zivoty,
+          jeVsazeno.vlozeno,
+          jeVsazeno.celkemVsazeno
+        );
       }
       jeKonec = true;
+      // const resetEl = document.getElementById("reset")
+      // resetEl.disabled = false;
       setPenize(getPenize());
+      console.log(getPenize());
     }
     if (e.target && e.target.id == "liznout") {
       if (!jeKonec) {
-        liznout(tazene, soucet, tazenePc, soucetPc, vlozeno);
+        liznout();
         rozdejKarty();
         // if (jeVsazeno) {
-        let poleTahnutych = Object.values(tazene).map(function (element) {
-          // return `<span class="font-semibold">${element.name}</span><br/>`;
-          return `<img class="w-24" src="${element.img}" alt="${element.name}"/>`;
-        }).join("");
+        let poleTahnutych = Object.values(tazene)
+          .map(function (element) {
+            // return `<span class="font-semibold">${element.name}</span><br/>`;
+            return `<img class="w-24" src="${element.img}" alt="${element.name}"/>`;
+          })
+          .join("");
         tahnutoEl.innerHTML = `<span class="font-bold">Na ruce máš</span><div class="grid grid-cols-2 md:grid-cols-6">${poleTahnutych}</div>`;
         // }
       }
@@ -207,21 +201,44 @@ document.addEventListener("click", function (e) {
   } else {
     return alert("Zamíchat karty bys nechtěl?");
   }
+  if (jeKonec) {
+    const resetEl = document.getElementById("reset");
+    const vsaditEl = document.getElementById("vsadit");
+    const liznoutEl = document.getElementById("liznout");
+    resetEl.disabled = false;
+    vsaditEl.disabled = true;
+    liznoutEl.disabled = true;
+  }
 });
-const vsazenePole =[];
+
+const vsazenePole = [];
 let celkemVsazeno;
+
 document.addEventListener(
   "click",
   function (e) {
     if (e.target && e.target.id == "vsadit") {
       if (zamichane.length > 1) {
         if (!jeKonec) {
-          jeVsazeno = vsadit(vlozils, vlozeno, jeVsazeno.vlozeno, vsazenePole, celkemVsazeno);
-          rozdejKarty();
+          jeVsazeno = vsadit(
+            vlozils,
+            vlozeno,
+            jeVsazeno.vlozeno,
+            vsazenePole,
+            celkemVsazeno
+          );
+          if(jeVsazeno.castka === 0){
+            return alert("Příště si to rozmysli, že nechceš sázet")
+          }else {
+            rozdejKarty();
+          }
+
           if (jeVsazeno.vlozeno) {
-            let poleTahnutych = Object.values(tazene).map(function (element) {
-              return `<img class="w-24" src="${element.img}" alt="${element.name}"/>`;
-            }).join("");;
+            let poleTahnutych = Object.values(tazene)
+              .map(function (element) {
+                return `<img class="w-24" src="${element.img}" alt="${element.name}"/>`;
+              })
+              .join("");
             tahnutoEl.innerHTML = `<span class="font-bold">Na ruce máš</span><div class="grid grid-cols-2 md:grid-cols-6">${poleTahnutych}</div>`;
           }
           setPenize(jeVsazeno.vlozeno);
@@ -252,9 +269,10 @@ function rozdejKarty() {
       `;
   if (soucet === 21) {
     controller.abort();
-    setPenize(jeVsazeno.vlozeno + jeVsazeno.celkemVsazeno * jeVsazeno.celkemVsazeno);
+    setPenize(
+      jeVsazeno.vlozeno + 2 * jeVsazeno.celkemVsazeno
+    );
     alert("Je to tak, vyhráls, máš 21!");
-    //return location.reload();
     jeKonec = true;
   }
   if (soucetPc === 21) {
@@ -265,20 +283,18 @@ function rozdejKarty() {
           return element.name;
         })
     );
-    //return location.reload();
     setPenize(jeVsazeno.vlozeno + jeVsazeno.celkemVsazeno);
     jeKonec = true;
   }
   if (soucet > 21) {
+    // localStorage.setItem("zivoty", zivoty - 1);
     controller.abort();
-    localStorage.setItem("zivoty", zivoty - 1);
-    console.log("kolik zivotu", zivoty);
     alert("Heh, jsi přes čáru, teda 21");
-    //return location.reload();
     jeKonec = true;
+    console.log('Jsi přes čáru', getPenize())
   } else if (soucetPc > 21) {
     controller.abort();
-    setPenize(jeVsazeno.vlozeno + 2*(jeVsazeno.celkemVsazeno));
+    setPenize(jeVsazeno.vlozeno + 2 * jeVsazeno.celkemVsazeno);
     alert(
       "Fajn, vyhráls... \nPočítač to přestřelil a zahrál: " +
         Object.values(tazenePc).map(function (element) {
@@ -287,7 +303,6 @@ function rozdejKarty() {
         "\nse součtem " +
         soucetPc
     );
-    //return location.reload();
     jeKonec = true;
   }
 }

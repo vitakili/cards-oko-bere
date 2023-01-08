@@ -5,6 +5,7 @@ export default function vsadit(vlozils, vlozeno, vsadils, vsazenePole, celkemVsa
   vsazenePole.push(castka);
   celkemVsazeno = vsazenePole.reduce((partialSum, a) => partialSum + a, 0);
   // console.log(celkemVsazeno);
+
   if (vlozeno === undefined) {
     if(vlozils > 0){
       vlozeno = vlozils;
@@ -16,7 +17,8 @@ export default function vsadit(vlozils, vlozeno, vsadils, vsazenePole, celkemVsa
     vlozeno = vsadils;
   }
 
-  if ((castka !== 0 && castka < vlozeno) || castka === vlozeno) {
+  if ((castka !== 0 && castka <= vlozeno)) {
+    console.log(castka);
     vlozeno = vlozeno - castka;
     document.getElementById(
       "vlozeno"
@@ -42,13 +44,16 @@ export default function vsadit(vlozils, vlozeno, vsadils, vsazenePole, celkemVsa
         let novaCastka = prompt("Notaaak, peníze, jakože číslo...");
         castka = Number(novaCastka);
       }
-      if (!isNaN(castka) && castka > 0 && castka < vlozeno) {
+      if (!isNaN(castka) && castka > 0 && castka < vlozeno || castka === vlozeno) {
         vlozeno = vlozeno - castka;
         document.getElementById(
           "vlozeno"
         ).innerHTML = `Zbývá ti <span class="font-bold">${vlozeno}</span> Kč`;
         vymaz;
         return {vlozeno, celkemVsazeno};
+      }
+      if(!castka){
+        return {vlozeno, celkemVsazeno, castka};
       }
     }
   }

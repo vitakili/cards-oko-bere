@@ -1,5 +1,4 @@
-export default function liznout(vlozeno) {
-  console.log(vlozeno);
-    return vlozeno;
+export default function liznout() {
+    return;
   }
   
